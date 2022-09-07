@@ -25,6 +25,7 @@ services:
         depends_on:
             - mysql
             - adminer
+            - phpmyadmin
             - redis
             - meilisearch
             - mailhog
@@ -33,7 +34,7 @@ services:
         image: 'mysql/mysql-server:8.0'
         container_name: db
         ports:
-            - '${FORWARD_DB_PORT:-3308}:3308'
+            - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '123456'
             MYSQL_DATABASE: '${DB_DATABASE}'
@@ -56,6 +57,18 @@ services:
             - 8080:8080
         networks:
             - sail
+    phpmyadmin:
+        image: 'phpmyadmin:latest'
+        ports:
+          - 8081:80
+        environment:
+          MYSQL_ROOT_PASSWORD: '123456'
+        links:
+          - "mysql:db"
+        depends_on:
+          - mysql
+        networks:
+          - sail
     redis:
         image: 'redis:alpine'
         ports:
