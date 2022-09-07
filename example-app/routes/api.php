@@ -21,21 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/teste', function (Request $request) {
-    $a = shell_exec("python3 /var/www/html/test.py");
-    echo '<pre>' , var_dump($a) , '</pre>'; die;
-    $process = new Process(["python3 /var/www/html/test.py"]);
-    $process->run();
-
-    if (!$process->isSuccessful()) {
-        throw new ProcessFailedException($process);
-    }
-
-    $data = $process->getOutput();
-
-    dd($data);
-});
-
     Route::get('/team', 'App\Http\Controllers\TeamController@index');
     Route::get('/team/{id}', 'App\Http\Controllers\TeamController@show');
     Route::post('/team', 'App\Http\Controllers\TeamController@create');
@@ -50,6 +35,10 @@ Route::get('/teste', function (Request $request) {
 
     Route::post('/championship/{id}/insertTeams', 'App\Http\Controllers\ChampionshipTeamController@insertTeamsOnAChampionship');
     Route::post('/championship/{id}/sort', 'App\Http\Controllers\ChampionshipTeamController@sortAndCreateGames');
+    Route::post('/championship/{id}/runGames', 'App\Http\Controllers\ChampionshipTeamController@runGames');
+
+
+    Route::post('/game/{id}/insertTeams', 'App\Http\Controllers\ChampionshipTeamController@insertTeamsOnAChampionship');
 
 
 
