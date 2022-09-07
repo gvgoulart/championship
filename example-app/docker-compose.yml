@@ -24,30 +24,38 @@ services:
             - sail
         depends_on:
             - mysql
+            - adminer
             - redis
             - meilisearch
             - mailhog
             - selenium
     mysql:
         image: 'mysql/mysql-server:8.0'
+        container_name: db
         ports:
             - '${FORWARD_DB_PORT:-3308}:3308'
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: "%"
+            MYSQL_ROOT_PASSWORD: '123456'
             MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            MYSQL_USER: 'root'
+            MYSQL_PASSWORD: '123456'
         volumes:
             - 'sail-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
         healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            test: ["CMD", "mysqladmin", "ping", "-p"]
             retries: 3
             timeout: 5s
+    adminer:
+        image: 'adminer:latest'
+        restart: always
+        container_name: adminer
+        ports:
+            - 8080:8080
+        networks:
+            - sail
     redis:
         image: 'redis:alpine'
         ports:
