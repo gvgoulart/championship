@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use robertogallea\LaravelPython\Services\LaravelPython;
 
 
 /*
@@ -36,4 +35,10 @@ Route::get('/teste', function (Request $request) {
 
     dd($data);
 });
+
+    Route::get('/team', 'App\Http\Controllers\TeamController@index');
+    Route::get('/team/{id}', 'App\Http\Controllers\TeamController@show');
+    Route::post('/team', 'App\Http\Controllers\TeamController@create');
+    Route::put('/team/{id}', 'App\Http\Controllers\TeamController@edit');
+    Route::delete('/team/{id}', 'App\Http\Controllers\TeamController@destroy');
 

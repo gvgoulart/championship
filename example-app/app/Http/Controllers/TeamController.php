@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TeamController extends Controller
 {
@@ -12,9 +13,9 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): object
     {
-        //
+        return Team::all();
     }
 
     /**
@@ -22,20 +23,17 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request): object
     {
-        //
-    }
+        $request->validate([
+            'name'    => 'required|string',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $team = Team::firstOrCreate([
+            'name' => $request->name
+        ]);
+
+        return $team;
     }
 
     /**
@@ -44,9 +42,13 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function show(Team $team)
+    public function show(Team $team, int $team_id): object
     {
-        //
+        if(Team::where('id',$team_id)->first()) {
+            return Team::where('id',$team_id)->first();
+        }
+
+        return response()->json(['error'=>'Team not found']);
     }
 
     /**
@@ -55,22 +57,21 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function edit(Team $team)
+    public function edit(Request $request, $team_id): object
     {
-        //
+        if(Team::where('id',$team_id)->first()) {
+            $request->validate([
+                'name'    => 'required|string',
+            ]);
+
+            Team::findOrFail($team_id)->update(['name' => $request->name]);
+
+            return Team::findOrFail($team_id);
+        }
+
+        return response()->json(['error'=>'Team not found']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Team  $team
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Team $team)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -78,8 +79,15 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Team $team)
+    public function destroy(Team $team, int $team_id): object
     {
-        //
+        if(!empty($team_id) && !empty(Team::where('id', $team_id)->first())) {
+           Team::findOrFail($team_id)->delete();
+
+           return response()->json(['success'=>'deleted']);
+        }
+
+        return response()->json(['error'=>'Team not found']);
+
     }
 }
