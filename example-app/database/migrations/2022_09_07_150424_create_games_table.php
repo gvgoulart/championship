@@ -15,7 +15,22 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('team_1');
+            $table->unsignedBigInteger('team_2');
+            $table->unsignedBigInteger('championship_id');
+            $table->string('type')->nullable();
+            $table->integer('winner')->nullable();
+            $table->string('score')->nullable();
             $table->timestamps();
+
+            $table->foreign('team_1')->references('id')->on('teams')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreign('team_2')->references('id')->on('teams')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreign('championship_id')->references('id')->on('championships')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
