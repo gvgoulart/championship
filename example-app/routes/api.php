@@ -42,3 +42,12 @@ Route::get('/teste', function (Request $request) {
     Route::put('/team/{id}', 'App\Http\Controllers\TeamController@edit');
     Route::delete('/team/{id}', 'App\Http\Controllers\TeamController@destroy');
 
+    Route::get('/championship', 'App\Http\Controllers\ChampionshipController@index');
+    Route::get('/championship/{id}', 'App\Http\Controllers\ChampionshipController@show');
+    Route::post('/championship', 'App\Http\Controllers\ChampionshipController@create');
+    Route::put('/championship/{id}', 'App\Http\Controllers\ChampionshipController@edit');
+    Route::delete('/championship/{id}', 'App\Http\Controllers\ChampionshipController@destroy');
+
+    Route::post('/championship/{id}/insertTeams', 'App\Http\Controllers\ChampionshipTeamController@insertTeamsOnAChampionship');
+
+
