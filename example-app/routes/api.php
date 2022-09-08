@@ -38,7 +38,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/championship/{id}/runGames', 'App\Http\Controllers\ChampionshipTeamController@runGames');
 
 
-    Route::post('/game/{id}/insertTeams', 'App\Http\Controllers\ChampionshipTeamController@insertTeamsOnAChampionship');
-
-
-

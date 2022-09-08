@@ -15,4 +15,9 @@ class ChampionshipTeam extends Model
         'points',
         'eliminated'
     ];
+
+    public function getPoints()
+    {
+        return $this->points;
+    }
 }
