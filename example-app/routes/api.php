@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 
 /*
@@ -35,6 +33,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
     Route::post('/championship/{id}/insertTeams', 'App\Http\Controllers\ChampionshipTeamController@insertTeamsOnAChampionship');
     Route::post('/championship/{id}/sort', 'App\Http\Controllers\ChampionshipTeamController@sortAndCreateGames');
-    Route::post('/championship/{id}/runGames', 'App\Http\Controllers\ChampionshipTeamController@runGames');
+
+    Route::post('/games/{championship_id}/run', 'App\Http\Controllers\GameController@runGames');
+
 
 
