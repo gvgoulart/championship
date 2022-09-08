@@ -29,14 +29,30 @@ class ChampionshipTeamService extends Service
         return ChampionshipTeam::where('championship_id',$championship_id)->where('eliminated', null)->get();
     }
 
-    public function validateEntryTeams(array $teams_to_insert, int $championship_id): bool
+    public function validateEntryTeams(array $teams_to_insert, int $championship_id): int
     {
         $count_teams_championship = 8 - $this->getCountAvaibleChampionshipGames($championship_id);
 
+        foreach($teams_to_insert as $team) {
+            $team_verify = Team::where('id', $team['team'])->orWhere('name', $team['team'])->first();
+
+            if(!empty($team_verify)) {
+                $team_already_in = ChampionshipTeam::where('championship_id', $championship_id)->where('team_id', $team_verify->id)->first();
+
+                if(!empty($team_already_in)) {
+                    return 3;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 2;
+            }
+        }
+
         if(count($teams_to_insert) <= $count_teams_championship) {
-            return true;
+            return 0;
         } else {
-            return false;
+            return 1;
         }
     }
 

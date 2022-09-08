@@ -30,13 +30,24 @@ class ChampionshipTeamController extends Controller
 
         $service = new ChampionshipTeamService;
 
-        if($service->validateEntryTeams($request->teams, $championship_id)) {
-            $service->insertTeams($request->teams, $championship_id);
-        } else {
-            return response()->json([
-                'error'             =>'O campeonato não suporta essa quantidade de times.',
-                'teams_already_in'  => ChampionshipTeam::where('championship_id', $championship_id)->get()
-            ], 400);
+        switch($service->validateEntryTeams($request->teams, $championship_id)) {
+            case 0:
+                $service->insertTeams($request->teams, $championship_id);
+            case 1:
+                return response()->json([
+                    'error'             =>'O campeonato não suporta essa quantidade de times.',
+                    'teams_already_in'  => ChampionshipTeam::where('championship_id', $championship_id)->get()
+                ], 400);
+            case 2:
+                return response()->json([
+                    'error'             =>'Você esta tentando inserir um time que não existe.',
+                    'teams_already_in'  => ChampionshipTeam::where('championship_id', $championship_id)->get()
+                ], 400);
+            case 3:
+                return response()->json([
+                    'error'             =>'Você esta tentando inserir um time já esta no campeonato.',
+                    'teams_already_in'  => ChampionshipTeam::where('championship_id', $championship_id)->get()
+                ], 400);
         }
 
         return response()->json([
