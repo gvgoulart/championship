@@ -88,7 +88,7 @@ class ChampionshipTeamService extends Service
 
             shuffle($team_ids);
 
-            $this->createChampionshipGames($team_ids, $this->getChampionshipStage, $championship_id);
+            $this->createChampionshipGames($team_ids, $this->getChampionshipStage($championship_id), $championship_id);
     }
 
     public function getChampionshipStage(int $championship_id): string
