@@ -11,6 +11,13 @@ No shell do docker, será necessário rodar as migrations e as seeds com o coman
 php artisan migrate && php artisan db:seed
 ```
 
+Também no shell do docker, para rodar os testes:
+
+```
+php artisan test
+```
+
+
 O insomnia do projeto esta na raiz.
 
 Criterios de Aceite:
