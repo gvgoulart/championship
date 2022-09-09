@@ -13,6 +13,7 @@ class Game extends Model
         'team_2',
         'championship_id',
         'winner',
+        'loser',
         'type',
         'score'
     ];

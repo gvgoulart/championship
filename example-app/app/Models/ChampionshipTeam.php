@@ -20,4 +20,9 @@ class ChampionshipTeam extends Model
     {
         return $this->points;
     }
+
+    public function teamNames()
+    {
+        return $this->hasMany('App\Models\Team');
+    }
 }

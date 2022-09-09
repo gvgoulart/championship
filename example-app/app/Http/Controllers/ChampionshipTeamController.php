@@ -81,7 +81,7 @@ class ChampionshipTeamController extends Controller
         } else {
             return response()->json([
                 'error'             =>'O campeonato já terminou!',
-                'teams_already_in'  => $this->getChampionshipStage($championship_id)
+                'teams_already_in'  => $service->getChampionshipStage($championship_id)
             ], 400);
         }
     }

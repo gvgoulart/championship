@@ -27,24 +27,22 @@ class ChampionshipTeamService extends Service
     {
         $count_teams_championship = 8 - $this->getCountAvaibleChampionshipGames($championship_id);
 
-        foreach($teams_to_insert as $team) {
-            $team_verify = Team::where('id', $team['team'])->orWhere('name', $team['team'])->first();
-
-            if(!empty($team_verify)) {
-                $team_already_in = ChampionshipTeam::where('championship_id', $championship_id)->where('team_id', $team_verify->id)->first();
-
-                if(!empty($team_already_in)) {
-                    return 3;
-                } else {
-                    return 0;
-                }
-            } else {
-                return 2;
-            }
-        }
-
         if(count($teams_to_insert) <= $count_teams_championship) {
-            return 0;
+            foreach($teams_to_insert as $team) {
+                $team_verify = Team::where('id', $team['team'])->orWhere('name', $team['team'])->first();
+
+                if(!empty($team_verify)) {
+                    $team_already_in = ChampionshipTeam::where('championship_id', $championship_id)->where('team_id', $team_verify->id)->first();
+
+                    if(!empty($team_already_in)) {
+                        return 3;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 2;
+                }
+            }
         } else {
             return 1;
         }
@@ -119,26 +117,6 @@ class ChampionshipTeamService extends Service
         }
     }
 
-    public function runGames(int $championship_id)
-    {
-        $matches = Game::where('championship_id', $championship_id)->where('winner', NULL)->get();
-
-        foreach($matches as $match) {
-            $score = explode(' ',$this->getScore());
-
-            $result = $this->getGameWinner($score, $match->team_1, $match->team_2);
-
-            Game::findOrFail($match->id)->update([
-                'winner'    => $result['winner'],
-                'score'     => $score[0] . '-' . $score[1],
-            ]);
-
-            $this->updatePointsAfterGame($result, $score, $championship_id);
-        }
-
-        return Game::where('championship_id', $championship_id)->get();
-    }
-
     public function getGameWinner(array $score, int $team_1, int $team_2): array
     {
         $score_team_1 = $score[0];
@@ -188,6 +166,7 @@ class ChampionshipTeamService extends Service
             'type'              => 'third',
             'championship_id'   => $championship_id,
             'winner'            => $result['winner'],
+            'loser'             => $result['loser'],
             'score'             => $score[0] . '-' . $score[1],
         ]);
 
@@ -201,7 +180,7 @@ class ChampionshipTeamService extends Service
         ]);
 
         ChampionshipTeam::where('team_id', $result['loser'])->update([
-            'points'        => ChampionshipTeam::where('team_id',$result['winner'])->where('championship_id', $championship_id)->first()->points + $score[1] - $score[0],
+            'points'        => ChampionshipTeam::where('team_id',$result['loser'])->where('championship_id', $championship_id)->first()->points + $score[1] - $score[0],
             'eliminated'    => 1
         ]);
     }

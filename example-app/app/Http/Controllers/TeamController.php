@@ -15,7 +15,7 @@ class TeamController extends Controller
      */
     public function index(): object
     {
-        return Team::all();
+        return Team::paginate(5);
     }
 
     /**

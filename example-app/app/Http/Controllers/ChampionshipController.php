@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\ChampionshipService;
 use App\Models\Championship;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class ChampionshipController extends Controller
      */
     public function index(): object
     {
-        return Championship::all();
+        return Championship::paginate(5);
     }
 
     /**
@@ -44,10 +45,13 @@ class ChampionshipController extends Controller
     public function show(Championship $championship, int $championship_id): object
     {
         if(Championship::where('id',$championship_id)->first()) {
-            return Championship::where('id',$championship_id)->first();
+            $service = new ChampionshipService($championship_id);
+
+            return response()->json(['success'=>'true',
+                                'data'  => $service->getChampionshipInfo()], 200);
         }
 
-        return response()->json(['error'=>'Championship not found']);
+        return response()->json(['error'=>'Championship not found'], 400);
     }
 
     /**

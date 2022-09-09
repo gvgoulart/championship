@@ -16,6 +16,7 @@ class GameService extends Service
 
             Game::findOrFail($match->id)->update([
                 'winner'    => $result['winner'],
+                'loser'     => $result['loser'],
                 'score'     => $score[0] . '-' . $score[1],
             ]);
 
@@ -31,7 +32,7 @@ class GameService extends Service
         ]);
 
         ChampionshipTeam::where('team_id', $result['loser'])->update([
-            'points'        => ChampionshipTeam::where('team_id',$result['winner'])->where('championship_id', $championship_id)->first()->points + $score[1],
+            'points'        => ChampionshipTeam::where('team_id',$result['loser'])->where('championship_id', $championship_id)->first()->points + $score[1],
             'eliminated'    => 1
         ]);
     }

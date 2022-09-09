@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('team_2');
             $table->unsignedBigInteger('championship_id');
             $table->string('type')->nullable();
-            $table->integer('winner')->nullable();
+            $table->unsignedBigInteger('winner')->nullable();
+            $table->unsignedBigInteger('loser')->nullable();
             $table->string('score')->nullable();
             $table->timestamps();
 
@@ -30,6 +31,12 @@ return new class extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreign('championship_id')->references('id')->on('championships')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreign('winner')->references('id')->on('teams')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreign('loser')->references('id')->on('teams')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }
