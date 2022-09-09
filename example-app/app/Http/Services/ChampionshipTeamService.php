@@ -8,12 +8,6 @@ use App\Models\Team;
 
 class ChampionshipTeamService extends Service
 {
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function getById(int $championship_id): object
     {
         return ChampionshipTeam::where('championship_id', $championship_id)->get();
@@ -203,11 +197,11 @@ class ChampionshipTeamService extends Service
     public function updatePointsAfterGame(array $result, array $score, $championship_id): void
     {
         ChampionshipTeam::where('team_id', $result['winner'])->update([
-            'points' => ChampionshipTeam::where('team_id',$result['winner'])->where('championship_id', $championship_id)->first()->points + $score[0]
+            'points' => ChampionshipTeam::where('team_id',$result['winner'])->where('championship_id', $championship_id)->first()->points + $score[0] - $score[1]
         ]);
 
         ChampionshipTeam::where('team_id', $result['loser'])->update([
-            'points'        => ChampionshipTeam::where('team_id',$result['winner'])->where('championship_id', $championship_id)->first()->points + $score[1],
+            'points'        => ChampionshipTeam::where('team_id',$result['winner'])->where('championship_id', $championship_id)->first()->points + $score[1] - $score[0],
             'eliminated'    => 1
         ]);
     }
