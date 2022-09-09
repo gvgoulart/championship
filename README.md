@@ -34,7 +34,7 @@ Neste projeto, é possível realizar um CRUD de times e de campeonatos, os nomes
 Para simularmos o campeonato, utilizamos em base 3 rotas, são elas:
 
 ```
-insertTeamsOnAChampionship       api/championship/{championship_id}2/insertTeams
+insertTeamsOnAChampionship       api/championship/{championship_id}/insertTeams
 ```
 
 que alimenta o campeonato com times de sua preferencia, máx 8.
