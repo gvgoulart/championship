@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use App\Models\Team;
+use App\Models\Championship;
 use Tests\TestCase;
 
-class TeamsTest extends TestCase
+class ChampionshipsTest extends TestCase
 {
     /**
      * A basic test example.
@@ -21,48 +21,48 @@ class TeamsTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_if_application_creates_a_new_team()
+    public function test_if_application_creates_a_new_championship()
     {
-        $team = Team::factory()->definition();
+        $championship = Championship::factory()->definition();
 
         $response = $this->withHeaders([
             'Content-type'  => 'application/json',
             'Accept'        => 'application/json',
-        ])->postJson('/api/team', ['name' => $team['name']]);
+        ])->postJson('/api/championship', ['name' => $championship['name']]);
 
         $response->assertStatus(201);
     }
 
-    public function test_if_application_deny_create_a_new_team_if_team_name_already_exists()
+    public function test_if_application_deny_create_a_new_championship_if_championship_name_already_exists()
     {
-        $existing_team = Team::first()->name;
+        $existing_championship = Championship::first()->name;
 
         $response = $this->withHeaders([
             'Content-type'  => 'application/json',
             'Accept'        => 'application/json',
-        ])->postJson('/api/team', ['name' => $existing_team]);
+        ])->postJson('/api/championship', ['name' => $existing_championship]);
 
         $response->assertStatus(400);
     }
 
-    public function test_if_application_can_get_a_existing_team()
+    public function test_if_application_can_get_a_existing_championship()
     {
-        $existing_team = Team::first()->id;
+        $existing_championship = Championship::first()->id;
 
         $response = $this->withHeaders([
             'Content-type'  => 'application/json',
             'Accept'        => 'application/json',
-        ])->get("/api/team/$existing_team");
+        ])->get("/api/championship/$existing_championship");
 
         $response->assertStatus(200);
     }
 
-    public function test_if_application_return_not_found_if_try_get_a_non_team()
+    public function test_if_application_return_not_found_if_try_get_a_non_championship()
     {
         $response = $this->withHeaders([
             'Content-type'  => 'application/json',
             'Accept'        => 'application/json',
-        ])->get("/api/team/". rand(90, 500));
+        ])->get("/api/championship/". rand(90, 500));
 
         $response->assertStatus(400);
     }

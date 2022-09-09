@@ -52,7 +52,7 @@ class TeamController extends Controller
             return Team::where('id',$team_id)->first();
         }
 
-        return response()->json(['error'=>'Team not found']);
+        return response()->json(['error'=>'Team not found'], 400);
     }
 
     /**
@@ -73,7 +73,7 @@ class TeamController extends Controller
             return Team::findOrFail($team_id);
         }
 
-        return response()->json(['error'=>'Team not found']);
+        return response()->json(['error'=>'Team not found'], 400);
     }
 
 
@@ -88,10 +88,10 @@ class TeamController extends Controller
         if(!empty($team_id) && !empty(Team::where('id', $team_id)->first())) {
            Team::findOrFail($team_id)->delete();
 
-           return response()->json(['success'=>'deleted']);
+           return response()->json(['success'=>'deleted'], 200);
         }
 
-        return response()->json(['error'=>'Team not found']);
+        return response()->json(['error'=>'Team not found'], 400);
 
     }
 }

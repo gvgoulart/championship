@@ -29,6 +29,10 @@ class ChampionshipController extends Controller
             'name'    => 'required|string',
         ]);
 
+        if(!empty(Championship::where('name', $request->name)->first())) {
+            return response()->json(['error'=>'Championship already exist!'],400);
+        }
+
         $championship = Championship::firstOrCreate([
             'name' => $request->name
         ]);
