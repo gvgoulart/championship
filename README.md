@@ -10,3 +10,5 @@ No shell do docker, será necessário rodar as migrations e as seeds com o coman
 ```
 php artisan migrate && php artisan db:seed
 ```
+
+O insomnia do projeto esta na raiz.
