@@ -29,6 +29,10 @@ class TeamController extends Controller
             'name'    => 'required|string',
         ]);
 
+        if(!empty(Team::where('name', $request->name)->first())) {
+            return response()->json(['error'=>'Team already exist!'],400);
+        }
+
         $team = Team::firstOrCreate([
             'name' => $request->name
         ]);
