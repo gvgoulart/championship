@@ -64,10 +64,23 @@ class ChampionshipTeamService extends Service
     public function validateChampionshipStage(int $championship_id):bool
     {
         if(!empty($this->getChampionshipStage($championship_id))) {
-            return true;
+            if($this->verifyIfChampionshipAlreadyStart($this->getChampionshipStage($championship_id), $championship_id)) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         };
+    }
+
+    public function verifyIfChampionshipAlreadyStart($championship_stage, $championship_id)
+    {
+        if(!empty( Game::where('type', $championship_stage)->where('championship_id', $championship_id)->where('winner', '=' ,NULL)->first())) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function sortAndCreateGames(int $championship_id): void
