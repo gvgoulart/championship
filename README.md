@@ -17,6 +17,14 @@ Também no shell do docker, para rodar os testes:
 php artisan test
 ```
 
+Senhas para o acesso do Adminer e Phpmyadmin:
+
+```
+server:db
+user: root,
+password: 123456
+```
+
 
 O insomnia do projeto esta na raiz.
 
