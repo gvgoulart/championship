@@ -33,6 +33,11 @@ class ChampionshipTeamController extends Controller
         switch($service->validateEntryTeams($request->teams, $championship_id)) {
             case 0:
                 $service->insertTeams($request->teams, $championship_id);
+
+                return response()->json([
+                    'success'           =>'O campeonato foi criado!',
+                    'teams_already_in'  => ChampionshipTeam::where('championship_id', $championship_id)->get()
+                ], 201);
             case 1:
                 return response()->json([
                     'error'             =>'O campeonato não suporta essa quantidade de times.',
