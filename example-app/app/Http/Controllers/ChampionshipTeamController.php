@@ -66,23 +66,29 @@ class ChampionshipTeamController extends Controller
 
         $service = new ChampionshipTeamService;
 
-        if($service->validateChampionshipStage($championship_id)) {
+        switch($service->validateChampionshipStage($championship_id)) {
+            case 0:
+                if($service->getChampionshipStage($championship_id) == 'final') {
+                    $service->getThirdPlace($championship_id);
+                }
 
-            if($service->getChampionshipStage($championship_id) == 'final') {
-                $service->getThirdPlace($championship_id);
-            }
+                $service->sortAndCreateGames($championship_id);
 
-            $service->sortAndCreateGames($championship_id);
+                return response()->json([
+                    'success'   =>"Partidas da {$service->getChampionshipStage($championship_id)} criadas!",
+                    'games'     => Game::where('championship_id', $championship_id)->get()
+                ], 200);
+            case 1:
+                return response()->json([
+                    'error'  =>'O campeonato ainda precisa que os jogos aconteçam para continuar!',
+                    'games'  => $service->getById($championship_id)
+                ], 400);
+            case 2:
+                return response()->json([
+                    'error'  =>'O campeonato já terminou!',
+                    'games'  => $service->getById($championship_id)
+                ], 400);
 
-            return response()->json([
-                'success'   =>"Partidas da {$service->getChampionshipStage($championship_id)} criadas!",
-                'games'     => Game::where('championship_id', $championship_id)->get()
-            ], 200);
-        } else {
-            return response()->json([
-                'error'             =>'O campeonato já terminou!',
-                'teams_already_in'  => $service->getChampionshipStage($championship_id)
-            ], 400);
         }
     }
 }

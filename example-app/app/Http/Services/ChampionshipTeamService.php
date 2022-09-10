@@ -61,16 +61,16 @@ class ChampionshipTeamService extends Service
         }
     }
 
-    public function validateChampionshipStage(int $championship_id):bool
+    public function validateChampionshipStage(int $championship_id):int
     {
         if(!empty($this->getChampionshipStage($championship_id))) {
             if($this->verifyIfChampionshipAlreadyStart($this->getChampionshipStage($championship_id), $championship_id)) {
-                return true;
+                return 0;
             } else {
-                return false;
+                return 1;
             }
         } else {
-            return false;
+            return 2;
         };
     }
 
