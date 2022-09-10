@@ -54,11 +54,6 @@ class ChampionshipTeamController extends Controller
                     'teams_already_in'  => ChampionshipTeam::where('championship_id', $championship_id)->get()
                 ], 400);
         }
-
-        return response()->json([
-            'success'            => true,
-            'teams_already_in'   => $service->getById($championship_id)
-        ], 200);
     }
 
     public function sortAndCreateGames(int $championship_id): object
