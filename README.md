@@ -1,5 +1,12 @@
 <h1>Rodar o projeto:</h1>
 
+Fazer a configuração do arquivo .env copiando o arquivo .env.example:
+
+```
+cp .env.example .env
+```
+
+
 ```
 docker build . && ./vendor/bin/sail up
 ```
